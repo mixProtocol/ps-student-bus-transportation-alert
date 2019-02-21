@@ -1,0 +1,63 @@
+<div class='studentAlert' id='alert-transRoute~(studentfrn)' style="width:540px;">
+  <img class='alertImage' src='' />
+  <script type="text/javascript">
+    $j("div.studentAlert[id*='alert-transRoute'] img.alertImage").attr('src', $j("a#transRoute_alert img")[0].src)
+  </script>
+  <div class='alertContent'>
+    <p class='alertHeader'>~(studentname)</p>
+    <p>~(first_name) has an active transportation record.<br /></p>
+~[tlist_sql;
+SELECT
+  UPPER(t.FromTo) AS FromTo,
+  TO_CHAR( DECODE(t.Sunday,1,'Su')
+          || DECODE(t.Monday,1,'M')
+          || DECODE(t.Tuesday,1,'T') 
+          || DECODE(t.Wednesday,1,'W')
+          || DECODE(t.Thursday,1,'H')
+          || DECODE(t.Friday,1,'F') 
+          || DECODE(t.Saturday,1,'Sa')) AS BusDays,
+  t.RouteNumber AS RouteNum,
+  TO_CHAR(t.StartDate, 'MM/DD/YYYY') AS StartDate,
+  t.StopNumber AS StopNum,
+  TO_CHAR(t.EndDate, 'MM/DD/YYYY') AS EndDate,
+  t.Description AS Description
+
+FROM Students s
+
+JOIN Transportation t
+  ON s.ID = t.StudentId
+  AND t.StartDate <= SYSTIMESTAMP
+  AND t.EndDate >= SYSTIMESTAMP
+  AND UPPER(NVL(TO_CHAR(t.Type), 'UNDEF')) NOT LIKE 'W'
+
+WHERE TO_CHAR('001' || s.Dcid) = ~(studentfrn)
+
+ORDER BY t.FromTo, t.RouteNumber, t.StopNumber, t.StartDate, t.EndDate
+
+;]  <span style="font-size:90%;">
+    <table width="100%" style="border: 1px solid lightgray">
+      <tr>
+          <td><strong>Direction</strong>:</td>
+          <td>~(FromTo) </td>
+          <td><strong>Days</strong>:</td>
+          <td>~(BusDays) </td>
+      </tr>
+      <tr>
+          <td><strong>Route</strong>:</td>
+          <td>~(RouteNum) </td>
+          <td><strong>StartDate</strong>:</td>
+          <td>~(StartDate) </td>
+      </tr>
+      <tr>
+          <td><strong>Stop</strong>:</td>
+          <td>~(StopNum) </td>
+          <td><strong>EndDate</strong>:</td>
+          <td>~(EndDate) </td>
+      </tr>
+      <tr>
+          <td colspan="4"><strong>Description</strong>:&nbsp; ~(Description)</td>
+      </tr>
+    </table>
+    </span>[/tlist_sql]
+  </div>
+</div>

@@ -1,0 +1,88 @@
+        <table border=0 cellpadding=2 cellspacing=0 width='100%' id='transroute_alerts' style='display:none;'>
+            <tr>
+                <td>~[ATT_RecordMeetingTeacherStudentList]
+        ~[tlist_sql;
+SELECT '<span ccid="ccid_[ccid]" class="transroutealert" dcid="' ||
+CAST(StudentTransportationRoutes.sDcid AS VARCHAR(50)) || '"' ||
+CASE
+   WHEN StudentTransportationRoutes.tpAlertImgSelector > 0 
+     THEN ' tpAlertImgSelector="' || TO_CHAR(StudentTransportationRoutes.tpAlertImgSelector) || '"'
+   ELSE TO_CHAR('')
+ END ||
+'></span>' FROM (WITH CurrentDay AS (
+  SELECT 
+    TO_CHAR(SYSTIMESTAMP, 'DY', 'nls_date_language=English') AS DayNameAbbrev
+  FROM Dual
+)
+SELECT
+  s.Dcid AS sDcid,
+  s.ID AS sID,
+  (MAX (CASE
+    WHEN t.FromTo IS NULL THEN 0
+    WHEN LOWER(t.FromTo) LIKE 'to' AND (
+      (CurrentDay.DayNameAbbrev LIKE 'MON' AND t.Monday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'TUE' AND t.Tuesday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'WED' AND t.Wednesday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'THU' AND t.Thursday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'FRI' AND t.Friday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'SAT' AND t.Saturday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'SUN' AND t.Sunday=1)
+      ) THEN 1
+    ELSE 0
+  END) + MAX (CASE
+    WHEN t.FromTo IS NULL THEN 0
+    WHEN LOWER(t.FromTo) LIKE 'from' AND (
+      (CurrentDay.DayNameAbbrev LIKE 'MON' AND t.Monday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'TUE' AND t.Tuesday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'WED' AND t.Wednesday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'THU' AND t.Thursday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'FRI' AND t.Friday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'SAT' AND t.Saturday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'SUN' AND t.Sunday=1)
+      ) THEN 2
+    ELSE 0
+  END) + 10) AS tpAlertImgSelector
+FROM Students s
+
+JOIN Transportation t
+  ON s.ID = t.StudentId
+  AND t.StartDate <= SYSTIMESTAMP
+  AND t.EndDate >= SYSTIMESTAMP
+  AND UPPER(NVL(TO_CHAR(t.Type), 'UNDEF')) NOT LIKE 'W'
+GROUP BY s.Dcid, s.ID) StudentTransportationRoutes 
+
+JOIN CC cc ON StudentTransportationRoutes.sId = cc.StudentID
+
+WHERE StudentTransportationRoutes.tpAlertImgSelector >0
+  AND cc.id = '[ccid]';]
+        ~(studentid;)[/tlist_sql] 
+                </td>
+            </tr>
+        </table>
+
+<script type = 'text/javascript'>
+$j(document).ready(function()
+        {
+            var transroute_alerts = $j('.transroutealert');
+            transroute_alerts.each(function(index, elem) {
+                var transroute_alert = $j(elem);
+                var ps_alerts = $j('#' + transroute_alert.attr('ccid') + ' td:eq(1)');
+                if (transroute_alert.attr('tpAlertImgSelector') > 0)
+                {
+                  switch (parseInt(transroute_alert.attr('tpAlertImgSelector'), 10)) {
+                    case 13:  // transportation TO and FROM school TODAY; display full icon
+                    case 12:  // transportation FROM school TODAY; display full icon
+                      var transRouteImg = "'/images/img/transporation_route_alert_to_and_from.png'";
+                      break;
+                    case 11:  // transportation TO school TODAY; display half icon
+                      var transRouteImg = "'/images/img/transporation_route_alert_to_only.png'";
+                      break;
+                    case 10:  // active transportation record, but none TODAY; show grey icon
+                    default:  // potential error; display grey icon
+                      var transRouteImg = "'/images/img/transporation_route_alert_not_today.png'";
+                  }
+                  ps_alerts.append("<a title='Transportation Route Alert' id='transroute_alert' href='/teachers/alerts/TransportationRoute_Alert.html?frn=001" + transroute_alert.attr('dcid') + "' class='dialogM'><img style='vertical-align: text-bottom;' src=" + transRouteImg + " alt='Transportation Route Alert' /></a>");
+                }
+            });
+        });
+</script>
