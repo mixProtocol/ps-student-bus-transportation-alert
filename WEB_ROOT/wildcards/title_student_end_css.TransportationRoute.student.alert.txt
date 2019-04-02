@@ -1,4 +1,6 @@
-<!-- ~[tlist_sql; 
+<script type="text/javascript">
+  var stu_frn = "~(frn)";
+  /* ~[tlist_sql; 
 WITH CurrentDay AS (
   SELECT 
     TO_CHAR(SYSTIMESTAMP, 'DY', 'nls_date_language=English') AS DayNameAbbrev
@@ -42,7 +44,8 @@ JOIN Transportation t
     AND UPPER(NVL(TO_CHAR(t.Type), 'UNDEF')) NOT LIKE 'W'
 
 WHERE s.Dcid = ~(rn) 
-GROUP BY s.Dcid;] --><script type="text/javascript">
+GROUP BY s.Dcid
+  ;] */
   var intTpAlertImgSelector = ~(tpAlertImgSelector) ;
   if (intTpAlertImgSelector > 0) {
     switch (intTpAlertImgSelector) {
@@ -56,6 +59,8 @@ GROUP BY s.Dcid;] --><script type="text/javascript">
       case 10:  // active transportation record, but none TODAY; show grey icon
         var transRouteHref = "'/images/img/transporation_route_alert_not_today.png'";
     }
-    document.write("<a title='Transportation Route Alert' id='transRoute_alert' href='/admin/alerts/TransportationRoute_Alert.html?frn=~(frn)' class='dialogM'><img src=" + transRouteHref + " alt='Transportation Route Alert' /></a>");
+    document.write("<a title='Transportation Route Alert' id='transRoute_alert' href='/admin/alerts/TransportationRoute_Alert.html?frn=" + 
+                     stu_frn + "' class='dialogM'><img src=" + transRouteHref + " alt='Transportation Route Alert' /></a>");
   }
-</script><!-- [/tlist_sql] -->
+  /* [/tlist_sql] */
+</script>
