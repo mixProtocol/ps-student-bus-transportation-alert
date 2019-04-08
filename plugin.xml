@@ -3,7 +3,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		description="Transportation Route Alerts"
 		name="Transportation Route Alerts"
-		version="0.00010"
+		version="0.00020"
 		xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd">
 		
     <publisher name="George Skuse">
