@@ -30,7 +30,6 @@ JOIN Transportation t
   ON s.ID = t.StudentId
   AND t.StartDate <= SYSTIMESTAMP
   AND t.EndDate >= SYSTIMESTAMP
-  AND UPPER(NVL(TO_CHAR(t.Type), 'UNDEF')) NOT LIKE 'W'
 
 WHERE TO_CHAR('001' || s.Dcid) = ~(studentfrn)
 

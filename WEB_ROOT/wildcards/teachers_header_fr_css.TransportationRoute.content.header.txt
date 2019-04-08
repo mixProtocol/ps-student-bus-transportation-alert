@@ -1,5 +1,6 @@
 <script type="text/javascript">
-  var intTpAlertImgSelector = 0 ~[tlist_sql; 
+  var stu_frn = "~(frn)";
+  /* ~[tlist_sql; 
 WITH CurrentDay AS (
   SELECT 
     TO_CHAR(SYSTIMESTAMP, 'DY', 'nls_date_language=English') AS DayNameAbbrev
@@ -43,7 +44,9 @@ JOIN Transportation t
     AND UPPER(NVL(TO_CHAR(t.Type), 'UNDEF')) NOT LIKE 'W'
 
 WHERE s.Dcid = ~(rn) 
-GROUP BY s.Dcid;] + ~(tpAlertImgSelector)[/tlist_sql] ;
+GROUP BY s.Dcid
+  ;] */
+  var intTpAlertImgSelector = ~(tpAlertImgSelector) ;
   if (intTpAlertImgSelector > 0) {
     switch (intTpAlertImgSelector) {
       case 13:  // transportation TO and FROM school TODAY; display full icon
@@ -56,7 +59,9 @@ GROUP BY s.Dcid;] + ~(tpAlertImgSelector)[/tlist_sql] ;
       case 10:  // active transportation record, but none TODAY; show grey icon
         var transRouteHref = "'/images/img/transporation_route_alert_not_today.png'";
     }
-    var strTpAlertToAdd = "<a title='Transportation Route Alert' id='transRoute_alert' href='/teachers/alerts/TransportationRoute_Alert.html?frn=~(frn)' class='dialogM'><img src=" + transRouteHref + " alt='Transportation Route Alert' /></a>";
-    $j(document).ready(function() { $j('form,[name=navigation]').children('h1').append(strTpAlertToAdd); });
+    var strTpAlertToAdd = "<a title='Transportation Route Alert' id='transRoute_alert' href='/teachers/alerts/TransportationRoute_Alert.html?frn=" + 
+                          stu_frn + "' class='dialogM'><img src=" + transRouteHref + " alt='Transportation Route Alert' /></a>";
+    $j(document).ready(function() { $j('form,[name=navigation]').children('h1').append(strTpAlertToAdd); } );
   }
+  /* [/tlist_sql] */
 </script>
