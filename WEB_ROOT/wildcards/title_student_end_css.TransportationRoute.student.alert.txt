@@ -59,6 +59,7 @@ GROUP BY s.Dcid
       case 10:  // active transportation record, but none TODAY; show grey icon
         var transRouteHref = "'/images/img/transporation_route_alert_not_today.png'";
     }
+    // TODO: Change document.write() to $j('#content-main h1:first').append()
     document.write("<a title='Transportation Route Alert' id='transRoute_alert' href='/admin/alerts/TransportationRoute_Alert.html?frn=" + 
                      stu_frn + "' class='dialogM'><img src=" + transRouteHref + " alt='Transportation Route Alert' /></a>");
   }
