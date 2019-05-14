@@ -8,6 +8,8 @@
   <div class='alertContent'>
     <p class='alertHeader'>~(studentname)</p>
     <p>~(first_name) has an active transportation record.<br /></p>
+    <span style="font-size:90%;">
+    <table width="100%" style="border: 1px solid lightgray">
 ~[tlist_sql;
 SELECT
   UPPER(t.FromTo) AS FromTo,
@@ -18,8 +20,16 @@ SELECT
           || DECODE(t.Thursday,1,'H')
           || DECODE(t.Friday,1,'F') 
           || DECODE(t.Saturday,1,'Sa')) AS BusDays,
-  t.RouteNumber AS RouteNum,
-  t.StopNumber AS StopNum,
+  CASE 
+    WHEN TRIM(t.RouteNumber) = TO_CHAR('') THEN '- - '
+    WHEN t.RouteNumber IS NULL THEN '- - '
+    ELSE t.RouteNumber
+  END AS RouteNum,
+  CASE 
+    WHEN TRIM(t.StopNumber) = TO_CHAR('') THEN '- - '
+    WHEN t.StopNumber IS NULL THEN '- - '
+    ELSE t.StopNumber
+  END AS StopNum,
   TO_CHAR(t.StartDate, 'MM/DD/YYYY') AS StartDate,
   DECODE (t.Type, 'R',  'Regular School Transportation',
                   'SR', 'Spec Educ on Regular School Trans',
@@ -27,7 +37,8 @@ SELECT
                   'I',  'Ineligible for School Trans',
                   'P',  'Rides With Parents',
                   'W',  'Walks',
-                  'O',  'Other' ) AS RouteType,
+                  'O',  'Other',
+                  NULL, '- - ') AS RouteType,
   TO_CHAR(t.EndDate, 'MM/DD/YYYY') AS EndDate,
   t.Description AS Description
 
@@ -40,30 +51,34 @@ WHERE TO_CHAR('001' || s.Dcid) = ~(studentfrn)
 
 ORDER BY t.FromTo, t.RouteNumber, t.StopNumber, t.StartDate, t.EndDate
 
-;]  <span style="font-size:90%;">
-    <table width="100%" style="border: 1px solid lightgray">
-      <tr>
-          <td><strong>Direction</strong>:</td>
-          <td>~(FromTo) </td>
-          <td><strong>Days</strong>:</td>
+;]      <tr>
+          <td><strong>Direction:</strong></td>
+          <td colspan="3">~(FromTo) </td>
+          <td><strong>Days:</strong></td>
           <td>~(BusDays) </td>
       </tr>
       <tr>
-          <td><strong>Route / Stop</strong>:</td>
-          <td>~(RouteNum) / ~(StopNum) </td>
-          <td><strong>StartDate</strong>:</td>
+          <td><strong>Route:</strong></td>
+          <td>~(RouteNum) </td>
+          <td><strong>Stop:</strong></td>
+          <td align="left">~(StopNum) </td>
+          <td><strong>StartDate:</strong></td>
           <td>~(StartDate) </td>
       </tr>
       <tr>
-          <td><strong>Route Type</strong>:</td>
-          <td>~(RouteType) </td>
-          <td><strong>EndDate</strong>:</td>
+          <td><strong>Route Type:</strong></td>
+          <td colspan="3">~(RouteType) </td>
+          <td><strong>EndDate:</strong></td>
           <td>~(EndDate) </td>
       </tr>
       <tr>
-          <td colspan="4"><strong>Description</strong>:&nbsp; ~(Description)</td>
+          <td><strong>Description:</strong></td>
+          <td colspan="5">~(Description) </td>
       </tr>
+      <tr>
+          <td colspan="6"><hr/></td>
+      </tr>[/tlist_sql]
     </table>
-    </span>[/tlist_sql]
+    </span>
   </div>
 </div>
