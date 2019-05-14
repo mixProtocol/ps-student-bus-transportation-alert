@@ -28,9 +28,7 @@ FROM Students s
 
 JOIN Transportation t
   ON s.ID = t.StudentId
-  AND t.StartDate <= SYSTIMESTAMP
-  AND t.EndDate >= SYSTIMESTAMP
-
+  AND SYSTIMESTAMP BETWEEN t.StartDate AND t.EndDate
 WHERE TO_CHAR('001' || s.Dcid) = ~(studentfrn)
 
 ORDER BY t.FromTo, t.RouteNumber, t.StopNumber, t.StartDate, t.EndDate

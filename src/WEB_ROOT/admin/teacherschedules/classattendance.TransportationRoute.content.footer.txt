@@ -48,8 +48,7 @@ CROSS JOIN CurrentDay
 
 JOIN Transportation t
   ON s.ID = t.StudentId
-  AND t.StartDate <= SYSTIMESTAMP
-  AND t.EndDate >= SYSTIMESTAMP
+  AND SYSTIMESTAMP BETWEEN t.StartDate AND t.EndDate
   AND UPPER(NVL(TO_CHAR(t.Type), 'UNDEF')) NOT LIKE 'W'
 GROUP BY s.Dcid, s.ID) StudentTransportationRoutes 
 
