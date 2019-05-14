@@ -12,6 +12,7 @@
     <table width="100%" style="border: 1px solid lightgray">
 ~[tlist_sql;
 SELECT
+  t.Dcid AS TransportDcid,
   UPPER(t.FromTo) AS FromTo,
   TO_CHAR( DECODE(t.Sunday,1,'Su')
           || DECODE(t.Monday,1,'M')
@@ -21,13 +22,13 @@ SELECT
           || DECODE(t.Friday,1,'F') 
           || DECODE(t.Saturday,1,'Sa')) AS BusDays,
   CASE 
-    WHEN TRIM(t.RouteNumber) = TO_CHAR('') THEN '- - '
-    WHEN t.RouteNumber IS NULL THEN '- - '
+    WHEN TRIM(t.RouteNumber) = TO_CHAR('') THEN CHR(45)||CHR(45)||CHR(45)
+    WHEN t.RouteNumber IS NULL THEN CHR(45)||CHR(45)||CHR(45)
     ELSE t.RouteNumber
   END AS RouteNum,
   CASE 
-    WHEN TRIM(t.StopNumber) = TO_CHAR('') THEN '- - '
-    WHEN t.StopNumber IS NULL THEN '- - '
+    WHEN TRIM(t.StopNumber) = TO_CHAR('') THEN CHR(45)||CHR(45)||CHR(45)
+    WHEN t.StopNumber IS NULL THEN CHR(45)||CHR(45)||CHR(45)
     ELSE t.StopNumber
   END AS StopNum,
   TO_CHAR(t.StartDate, 'MM/DD/YYYY') AS StartDate,
@@ -38,7 +39,7 @@ SELECT
                   'P',  'Rides With Parents',
                   'W',  'Walks',
                   'O',  'Other',
-                  NULL, '- - ') AS RouteType,
+                  NULL, CHR(45)||CHR(45)||CHR(45)) AS RouteType,
   TO_CHAR(t.EndDate, 'MM/DD/YYYY') AS EndDate,
   t.Description AS Description
 
@@ -51,7 +52,7 @@ WHERE TO_CHAR('001' || s.Dcid) = ~(studentfrn)
 
 ORDER BY t.FromTo, t.RouteNumber, t.StopNumber, t.StartDate, t.EndDate
 
-;]      <tr>
+;]      <tr id="transportDcid-~(TransportDcid)">
           <td><strong>Direction:</strong></td>
           <td colspan="3">~(FromTo) </td>
           <td><strong>Days:</strong></td>
