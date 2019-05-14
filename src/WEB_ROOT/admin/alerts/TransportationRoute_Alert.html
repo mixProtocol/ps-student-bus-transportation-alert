@@ -21,7 +21,13 @@ SELECT
   t.RouteNumber AS RouteNum,
   t.StopNumber AS StopNum,
   TO_CHAR(t.StartDate, 'MM/DD/YYYY') AS StartDate,
-  t.Type AS RouteType,
+  DECODE (t.Type, 'R',  'Regular School Transportation',
+                  'SR', 'Spec Educ on Regular School Trans',
+                  'SS', 'Spec Educ on Spec Needs Trans',
+                  'I',  'Ineligible for School Trans',
+                  'P',  'Rides With Parents',
+                  'W',  'Walks',
+                  'O',  'Other' ) AS RouteType,
   TO_CHAR(t.EndDate, 'MM/DD/YYYY') AS EndDate,
   t.Description AS Description
 
