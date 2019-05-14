@@ -19,8 +19,9 @@ SELECT
           || DECODE(t.Friday,1,'F') 
           || DECODE(t.Saturday,1,'Sa')) AS BusDays,
   t.RouteNumber AS RouteNum,
-  TO_CHAR(t.StartDate, 'MM/DD/YYYY') AS StartDate,
   t.StopNumber AS StopNum,
+  TO_CHAR(t.StartDate, 'MM/DD/YYYY') AS StartDate,
+  t.Type AS RouteType,
   TO_CHAR(t.EndDate, 'MM/DD/YYYY') AS EndDate,
   t.Description AS Description
 
@@ -42,14 +43,14 @@ ORDER BY t.FromTo, t.RouteNumber, t.StopNumber, t.StartDate, t.EndDate
           <td>~(BusDays) </td>
       </tr>
       <tr>
-          <td><strong>Route</strong>:</td>
-          <td>~(RouteNum) </td>
+          <td><strong>Route / Stop</strong>:</td>
+          <td>~(RouteNum) / ~(StopNum) </td>
           <td><strong>StartDate</strong>:</td>
           <td>~(StartDate) </td>
       </tr>
       <tr>
-          <td><strong>Stop</strong>:</td>
-          <td>~(StopNum) </td>
+          <td><strong>Route Type</strong>:</td>
+          <td>~(RouteType) </td>
           <td><strong>EndDate</strong>:</td>
           <td>~(EndDate) </td>
       </tr>
