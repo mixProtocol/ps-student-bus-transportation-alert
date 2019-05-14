@@ -1,4 +1,4 @@
-<div class='studentAlert' id='alert-transRoute~(studentfrn)' style="width:560px;">
+<div class='studentAlert' id='alert-transRoute~(studentfrn)' style="width:600px;">
   <img class='alertImage' src='/images/img/transporation_route_alert_to_and_from.png' />
   <script type="text/javascript">
     // TODO: Select the dialog box's icon, just as we select the alertIcon
@@ -8,7 +8,7 @@
   <div class='alertContent'>
     <p class='alertHeader'>~(studentname)</p>
     <p>~(first_name) has an active transportation record.<br /></p>
-    <span style="font-size:90%;">
+    <span style="font-size:88%;">
     <table width="100%" style="border: 1px solid lightgray">
 ~[tlist_sql;
 SELECT
@@ -22,13 +22,13 @@ SELECT
           || DECODE(t.Friday,1,'F') 
           || DECODE(t.Saturday,1,'Sa')) AS BusDays,
   CASE 
-    WHEN TRIM(t.RouteNumber) = TO_CHAR('') THEN CHR(45)||CHR(45)||CHR(45)
-    WHEN t.RouteNumber IS NULL THEN CHR(45)||CHR(45)||CHR(45)
+    WHEN TRIM(t.RouteNumber) = TO_CHAR('') THEN CHR(45)||CHR(45)
+    WHEN t.RouteNumber IS NULL THEN CHR(45)||CHR(45)
     ELSE t.RouteNumber
   END AS RouteNum,
   CASE 
-    WHEN TRIM(t.StopNumber) = TO_CHAR('') THEN CHR(45)||CHR(45)||CHR(45)
-    WHEN t.StopNumber IS NULL THEN CHR(45)||CHR(45)||CHR(45)
+    WHEN TRIM(t.StopNumber) = TO_CHAR('') THEN CHR(45)||CHR(45)
+    WHEN t.StopNumber IS NULL THEN CHR(45)||CHR(45)
     ELSE t.StopNumber
   END AS StopNum,
   TO_CHAR(t.StartDate, 'MM/DD/YYYY') AS StartDate,
@@ -60,21 +60,21 @@ ORDER BY t.FromTo, t.RouteNumber, t.StopNumber, t.StartDate, t.EndDate
       </tr>
       <tr>
           <td><strong>Route&nbsp;Num:</strong></td>
-          <td>~(RouteNum) </td>
+          <td width="20%">~(RouteNum) </td>
           <td align="center"><strong>Stop&nbsp;Num:</strong></td>
           <td width="20%">~(StopNum) </td>
           <td><strong>Start&nbsp;Date:</strong></td>
-          <td>~(StartDate) </td>
+          <td style="font-size:92%;">~(StartDate) </td>
       </tr>
       <tr>
           <td><strong>Route&nbsp;Type:</strong></td>
-          <td colspan="3">~(RouteType) </td>
+          <td colspan="3" style="font-size:92%;">~(RouteType) </td>
           <td><strong>End&nbsp;Date:</strong></td>
-          <td>~(EndDate) </td>
+          <td style="font-size:92%;">~(EndDate) </td>
       </tr>
       <tr>
           <td><strong>Description:</strong></td>
-          <td colspan="5">~(Description) </td>
+          <td colspan="5" style="font-size:92%;">~(Description) </td>
       </tr>
       <tr>
           <td colspan="6"><hr/></td>
