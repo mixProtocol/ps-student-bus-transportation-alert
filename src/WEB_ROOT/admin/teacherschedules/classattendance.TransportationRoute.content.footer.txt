@@ -61,29 +61,27 @@ WHERE StudentTransportationRoutes.tpAlertImgSelector >0
             </tr>
         </table>
 
-<script type = 'text/javascript'>
-$j(document).ready(function()
-        {
-            var transroute_alerts = $j('.transroutealert');
-            transroute_alerts.each(function(index, elem) {
-                var transroute_alert = $j(elem);
-                var ps_alerts = $j('#' + transroute_alert.attr('ccid') + ' td:eq(1)');
-                if (transroute_alert.attr('tpAlertImgSelector') > 0)
-                {
-                  switch (parseInt(transroute_alert.attr('tpAlertImgSelector'), 10)) {
-                    case 13:  // transportation TO and FROM school TODAY; display full icon
-                    case 12:  // transportation FROM school TODAY; display full icon
-                      var transRouteImg = "'/images/img/transporation_route_alert_to_and_from.png'";
-                      break;
-                    case 11:  // transportation TO school TODAY; display half icon
-                      var transRouteImg = "'/images/img/transporation_route_alert_to_only.png'";
-                      break;
-                    case 10:  // active transportation record, but none TODAY; show grey icon
-                    default:  // potential error; display grey icon
-                      var transRouteImg = "'/images/img/transporation_route_alert_not_today.png'";
-                  }
-                  ps_alerts.append("<a title='Transportation Route Alert' id='transroute_alert' href='/admin/alerts/TransportationRoute_Alert.html?frn=001" + transroute_alert.attr('dcid') + "' class='dialogM'><img style='vertical-align: text-bottom;' src=" + transRouteImg + " alt='Transportation Route Alert' /></a>");
-                }
-            });
-        });
+<script type='text/javascript'>
+  $j(document).ready(function () {
+    var transroute_alerts = $j('.transroutealert');
+    transroute_alerts.each(function (index, elem) {
+      var transroute_alert = $j(elem);
+      var ps_alerts = $j('#' + transroute_alert.attr('ccid') + ' td:eq(1)');
+      if (transroute_alert.attr('tpAlertImgSelector') > 0) {
+        switch (parseInt(transroute_alert.attr('tpAlertImgSelector'), 10)) {
+          case 13:  // transportation TO and FROM school TODAY; display full icon
+          case 12:  // transportation FROM school TODAY; display full icon
+            var transRouteImg = "'/images/img/transporation_route_alert_to_and_from.png'";
+            break;
+          case 11:  // transportation TO school TODAY; display half icon
+            var transRouteImg = "'/images/img/transporation_route_alert_to_only.png'";
+            break;
+          case 10:  // active transportation record, but none TODAY; show grey icon
+          default:  // potential error; display grey icon
+            var transRouteImg = "'/images/img/transporation_route_alert_not_today.png'";
+        }
+        ps_alerts.append("<a title='Transportation Route Alert' id='transroute_alert' href='/admin/alerts/TransportationRoute_Alert.html?frn=001" + transroute_alert.attr('dcid') + "' class='dialogM'><img style='vertical-align: text-bottom;' src=" + transRouteImg + " alt='Transportation Route Alert' /></a>");
+      }
+    });
+  });
 </script>

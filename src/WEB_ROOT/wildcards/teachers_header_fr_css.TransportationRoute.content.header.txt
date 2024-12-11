@@ -41,7 +41,7 @@ JOIN CurrentDay
 WHERE s.Dcid = ~(rn) 
 GROUP BY s.Dcid
   ;] */
-  var intTpAlertImgSelector = ~(tpAlertImgSelector) ;
+  var intTpAlertImgSelector = ~(tpAlertImgSelector);
   if (intTpAlertImgSelector > 0) {
     switch (intTpAlertImgSelector) {
       case 13:  // transportation TO and FROM school TODAY; display full icon
@@ -54,9 +54,9 @@ GROUP BY s.Dcid
       case 10:  // active transportation record, but none TODAY; show grey icon
         var transRouteHref = "'/images/img/transporation_route_alert_not_today.png'";
     }
-    var strTpAlertToAdd = "<a title='Transportation Route Alert' id='transRoute_alert' href='/teachers/alerts/TransportationRoute_Alert.html?frn=" + 
-                          stu_frn + "' class='dialogM'><img src=" + transRouteHref + " alt='Transportation Route Alert' /></a>";
-    $j(document).ready(function() { $j('form,[name=navigation]').children('h1').append(strTpAlertToAdd); } );
+    var strTpAlertToAdd = "<a title='Transportation Route Alert' id='transRoute_alert' href='/teachers/alerts/TransportationRoute_Alert.html?frn=" +
+      stu_frn + "' class='dialogM'><img src=" + transRouteHref + " alt='Transportation Route Alert' /></a>";
+    $j(document).ready(function () { $j('form,[name=navigation]').children('h1').append(strTpAlertToAdd); });
   }
   /* [/tlist_sql] */
 </script>
