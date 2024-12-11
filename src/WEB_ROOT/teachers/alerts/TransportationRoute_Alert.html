@@ -35,7 +35,7 @@ FROM Students s
 
 JOIN Transportation t
   ON s.ID = t.StudentId
-  AND SYSTIMESTAMP BETWEEN t.StartDate AND t.EndDate
+  AND SYSDATE BETWEEN t.StartDate AND t.EndDate
 
 WHERE TO_CHAR('001' || s.Dcid) = ~(studentfrn)
 

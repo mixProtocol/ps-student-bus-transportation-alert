@@ -3,7 +3,7 @@
   /* ~[tlist_sql; 
 WITH CurrentDay AS (
   SELECT 
-    TO_CHAR(SYSTIMESTAMP, 'DY', 'nls_date_language=English') AS DayNameAbbrev
+    TO_CHAR(SYSDATE, 'DY', 'nls_date_language=English') AS DayNameAbbrev
   FROM Dual
 )
 SELECT
@@ -39,8 +39,8 @@ CROSS JOIN CurrentDay
 
 JOIN Transportation t
   ON s.ID = t.StudentId
-    AND t.StartDate <= SYSTIMESTAMP
-    AND t.EndDate >= SYSTIMESTAMP
+    AND t.StartDate <= SYSDATE
+    AND t.EndDate >= SYSDATE
     AND UPPER(NVL(TO_CHAR(t.Type), 'UNDEF')) NOT LIKE 'W'
 
 WHERE s.Dcid = ~(rn) 

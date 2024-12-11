@@ -11,7 +11,7 @@ CASE
  END ||
 '></span>' FROM (WITH CurrentDay AS (
   SELECT 
-    TO_CHAR(SYSTIMESTAMP, 'DY', 'nls_date_language=English') AS DayNameAbbrev
+    TO_CHAR(SYSDATE, 'DY', 'nls_date_language=English') AS DayNameAbbrev
   FROM Dual
 )
 SELECT
@@ -48,7 +48,7 @@ CROSS JOIN CurrentDay
 
 JOIN Transportation t
   ON s.ID = t.StudentId
-  AND SYSTIMESTAMP BETWEEN t.StartDate AND t.EndDate
+  AND SYSDATE BETWEEN t.StartDate AND t.EndDate
   AND UPPER(NVL(TO_CHAR(t.Type), 'UNDEF')) NOT LIKE 'W'
 GROUP BY s.Dcid, s.ID) StudentTransportationRoutes 
 
