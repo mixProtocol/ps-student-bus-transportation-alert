@@ -2,47 +2,42 @@
   var stu_frn = "~(frn)";
   /* ~[tlist_sql; 
 WITH CurrentDay AS (
-  SELECT 
-    TO_CHAR(SYSDATE, 'DY', 'nls_date_language=English') AS DayNameAbbrev
+  SELECT
+    TRUNC(SYSTIMESTAMP) AS Trunc_Date,
+    TO_CHAR(SYSTIMESTAMP, 'DY', 'nls_date_language=English') AS DayNameAbbrev
   FROM Dual
 )
 SELECT
   (MAX (CASE
     WHEN t.FromTo IS NULL THEN 0
-    WHEN LOWER(t.FromTo) LIKE 'to' AND (
-      (CurrentDay.DayNameAbbrev LIKE 'MON' AND t.Monday=1)
+    WHEN LOWER(t.FromTo) LIKE 'to' THEN 1
+    ELSE 0
+  END) + MAX (CASE
+    WHEN t.FromTo IS NULL THEN 0
+    WHEN LOWER(t.FromTo) LIKE 'from' THEN 2
+    ELSE 0
+  END) + 10) AS tpAlertImgSelector
+
+FROM Students s
+
+JOIN Transportation t
+  ON s.ID = t.StudentId
+ AND UPPER(NVL(TO_CHAR(t.Type), 'UNDEF')) NOT LIKE 'W'
+
+
+JOIN CurrentDay
+  ON t.StartDate <= CurrentDay.Trunc_Date
+ AND t.EndDate >= CurrentDay.Trunc_Date
+ AND (
+       (CurrentDay.DayNameAbbrev LIKE 'MON' AND t.Monday=1)
         OR (CurrentDay.DayNameAbbrev LIKE 'TUE' AND t.Tuesday=1)
         OR (CurrentDay.DayNameAbbrev LIKE 'WED' AND t.Wednesday=1)
         OR (CurrentDay.DayNameAbbrev LIKE 'THU' AND t.Thursday=1)
         OR (CurrentDay.DayNameAbbrev LIKE 'FRI' AND t.Friday=1)
         OR (CurrentDay.DayNameAbbrev LIKE 'SAT' AND t.Saturday=1)
         OR (CurrentDay.DayNameAbbrev LIKE 'SUN' AND t.Sunday=1)
-      ) THEN 1
-    ELSE 0
-  END) + MAX (CASE
-    WHEN t.FromTo IS NULL THEN 0
-    WHEN LOWER(t.FromTo) LIKE 'from' AND (
-      (CurrentDay.DayNameAbbrev LIKE 'MON' AND t.Monday=1)
-          OR (CurrentDay.DayNameAbbrev LIKE 'TUE' AND t.Tuesday=1)
-          OR (CurrentDay.DayNameAbbrev LIKE 'WED' AND t.Wednesday=1)
-          OR (CurrentDay.DayNameAbbrev LIKE 'THU' AND t.Thursday=1)
-          OR (CurrentDay.DayNameAbbrev LIKE 'FRI' AND t.Friday=1)
-          OR (CurrentDay.DayNameAbbrev LIKE 'SAT' AND t.Saturday=1)
-          OR (CurrentDay.DayNameAbbrev LIKE 'SUN' AND t.Sunday=1)
-      ) THEN 2
-    ELSE 0
-  END) + 10) AS tpAlertImgSelector
-
-FROM Students s
-
-CROSS JOIN CurrentDay
-
-JOIN Transportation t
-  ON s.ID = t.StudentId
-    AND t.StartDate <= SYSDATE
-    AND t.EndDate >= SYSDATE
-    AND UPPER(NVL(TO_CHAR(t.Type), 'UNDEF')) NOT LIKE 'W'
-
+     )
+  
 WHERE s.Dcid = ~(rn) 
 GROUP BY s.Dcid
   ;] */
