@@ -1,0 +1,34 @@
+[
+  ~[if#sec.security.pagenone=/admin/teacherschedules/classattendance.html]
+  [else#sec]
+	~[tlist_sql;
+    SELECT
+      JSON_OBJECT (
+        'sDcid' VALUE TO_CHAR(s.Dcid),
+        'ccId' VALUE TO_CHAR(cc.Id)
+      )
+      
+    FROM Students s
+
+    JOIN CC cc
+      ON s.Id = cc.StudentId
+     AND s.SchoolId = cc.SchoolId 
+     AND FLOOR(ABS(cc.TermID)/100) = ~(curyearid)
+     AND ( ABS(cc.SectionID) = (~(gpv.sectionid;num) - 0)
+      ~[if#PgTypeMultMtg.gpv.pagetype=MultiMeeting]
+           OR cc.ID in (~(gpv.CCIDs;sqlText))
+      [/if#PgTypeMultMtg]
+         )
+
+
+
+
+
+         
+
+    GROUP BY s.Dcid, cc.Id
+    ]
+    ~(jsonObj),
+  [/tlist_sql]
+	[/if#sec]
+{}]
