@@ -1,8 +1,8 @@
-<table border=0 cellpadding=2 cellspacing=0 width='100%' id='transroute_alerts' style='display:none;'>
-  <tr>
-    <td>~[ATT_RecordMeetingTeacherStudentList]
-      ~[tlist_sql;
-      SELECT '<span ccid="ccid_[ccid]" class="transroutealert" dcid="' ||
+        <table border=0 cellpadding=2 cellspacing=0 width='100%' id='transroute_alerts' style='display:none;'>
+            <tr>
+                <td>~[ATT_RecordMeetingTeacherStudentList]
+        ~[tlist_sql;
+SELECT '<span ccid="ccid_[ccid]" class="transroutealert" dcid="' ||
 CAST(StudentTransportationRoutes.sDcid AS VARCHAR(50)) || '"' ||
 CASE
    WHEN StudentTransportationRoutes.tpAlertImgSelector > 0 
@@ -10,56 +10,56 @@ CASE
    ELSE TO_CHAR('')
  END ||
 '></span>' FROM (WITH CurrentDay AS (
-      SELECT
-      TO_CHAR(SYSDATE, 'DY', 'nls_date_language=English') AS DayNameAbbrev
-      FROM Dual
-      )
-      SELECT
-      s.Dcid AS sDcid,
-      s.ID AS sID,
-      (MAX (CASE
-      WHEN t.FromTo IS NULL THEN 0
-      WHEN LOWER(t.FromTo) LIKE 'to' AND (
+  SELECT 
+    TO_CHAR(SYSDATE, 'DY', 'nls_date_language=English') AS DayNameAbbrev
+  FROM Dual
+)
+SELECT
+  s.Dcid AS sDcid,
+  s.ID AS sID,
+  (MAX (CASE
+    WHEN t.FromTo IS NULL THEN 0
+    WHEN LOWER(t.FromTo) LIKE 'to' AND (
       (CurrentDay.DayNameAbbrev LIKE 'MON' AND t.Monday=1)
-      OR (CurrentDay.DayNameAbbrev LIKE 'TUE' AND t.Tuesday=1)
-      OR (CurrentDay.DayNameAbbrev LIKE 'WED' AND t.Wednesday=1)
-      OR (CurrentDay.DayNameAbbrev LIKE 'THU' AND t.Thursday=1)
-      OR (CurrentDay.DayNameAbbrev LIKE 'FRI' AND t.Friday=1)
-      OR (CurrentDay.DayNameAbbrev LIKE 'SAT' AND t.Saturday=1)
-      OR (CurrentDay.DayNameAbbrev LIKE 'SUN' AND t.Sunday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'TUE' AND t.Tuesday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'WED' AND t.Wednesday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'THU' AND t.Thursday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'FRI' AND t.Friday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'SAT' AND t.Saturday=1)
+        OR (CurrentDay.DayNameAbbrev LIKE 'SUN' AND t.Sunday=1)
       ) THEN 1
-      ELSE 0
-      END) + MAX (CASE
-      WHEN t.FromTo IS NULL THEN 0
-      WHEN LOWER(t.FromTo) LIKE 'from' AND (
+    ELSE 0
+  END) + MAX (CASE
+    WHEN t.FromTo IS NULL THEN 0
+    WHEN LOWER(t.FromTo) LIKE 'from' AND (
       (CurrentDay.DayNameAbbrev LIKE 'MON' AND t.Monday=1)
-      OR (CurrentDay.DayNameAbbrev LIKE 'TUE' AND t.Tuesday=1)
-      OR (CurrentDay.DayNameAbbrev LIKE 'WED' AND t.Wednesday=1)
-      OR (CurrentDay.DayNameAbbrev LIKE 'THU' AND t.Thursday=1)
-      OR (CurrentDay.DayNameAbbrev LIKE 'FRI' AND t.Friday=1)
-      OR (CurrentDay.DayNameAbbrev LIKE 'SAT' AND t.Saturday=1)
-      OR (CurrentDay.DayNameAbbrev LIKE 'SUN' AND t.Sunday=1)
+          OR (CurrentDay.DayNameAbbrev LIKE 'TUE' AND t.Tuesday=1)
+          OR (CurrentDay.DayNameAbbrev LIKE 'WED' AND t.Wednesday=1)
+          OR (CurrentDay.DayNameAbbrev LIKE 'THU' AND t.Thursday=1)
+          OR (CurrentDay.DayNameAbbrev LIKE 'FRI' AND t.Friday=1)
+          OR (CurrentDay.DayNameAbbrev LIKE 'SAT' AND t.Saturday=1)
+          OR (CurrentDay.DayNameAbbrev LIKE 'SUN' AND t.Sunday=1)
       ) THEN 2
-      ELSE 0
-      END) + 10) AS tpAlertImgSelector
-      FROM Students s
+    ELSE 0
+  END) + 10) AS tpAlertImgSelector
+FROM Students s
 
-      CROSS JOIN CurrentDay
+CROSS JOIN CurrentDay
 
-      JOIN Transportation t
-      ON s.ID = t.StudentId
-      AND SYSDATE BETWEEN t.StartDate AND t.EndDate
-      AND UPPER(NVL(TO_CHAR(t.Type), 'UNDEF')) NOT LIKE 'W'
-      GROUP BY s.Dcid, s.ID) StudentTransportationRoutes
+JOIN Transportation t
+  ON s.ID = t.StudentId
+  AND SYSDATE BETWEEN t.StartDate AND t.EndDate
+  AND UPPER(NVL(TO_CHAR(t.Type), 'UNDEF')) NOT LIKE 'W'
+GROUP BY s.Dcid, s.ID) StudentTransportationRoutes 
 
-      JOIN CC cc ON StudentTransportationRoutes.sId = cc.StudentID
+JOIN CC cc ON StudentTransportationRoutes.sId = cc.StudentID
 
-      WHERE StudentTransportationRoutes.tpAlertImgSelector >0
-      AND cc.id = '[ccid]';]
-      ~(studentid;)[/tlist_sql]
-    </td>
-  </tr>
-</table>
+WHERE StudentTransportationRoutes.tpAlertImgSelector >0
+  AND cc.id = '[ccid]';]
+        ~(studentid;)[/tlist_sql] 
+                </td>
+            </tr>
+        </table>
 
 <script type='text/javascript'>
   $j(document).ready(function () {
